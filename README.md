@@ -5,9 +5,9 @@
 
 
 ## Setting up
-Download [chrome driver](https://sites.google.com/a/chromium.org/chromedriver/)   
-Place driver in repository root folder  
-Install selenium library  
+* Download [chrome driver](https://sites.google.com/a/chromium.org/chromedriver/)   
+* Place driver in repository root folder  
+* Install selenium library  
 ```
 pip install -U selenium
 ```  
@@ -17,6 +17,11 @@ pip install -U selenium
 python3 poster.py
 ```
 
-## Future Enhancements  
+## Current features
+* Logging into site  
+* Searching a particular thread to see if user has already posted a message  
+* Explicit waits in between posts to prevent being blocked by website for spamming  
+
+## Future enhancements  
 * Prevent crawler from posting on threads which are more than 3 days old  
 * Run crawler through proxy requests to mask IP
