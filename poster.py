@@ -12,7 +12,7 @@ CONGRAGULATIONS_MSG_TEMPLATE = ["good luck bro!!!!!!!!",
                                 "good luck 888!!!!!!!!!!", "best of luckkkkkkk!!!!!!!!!!"]
 
 
-class Forum_Crawler:
+class ForumCrawler:
 
     def __init__(self):
         self.driver_path = os.path.join(os.getcwd(), "chromedriver")
@@ -143,5 +143,5 @@ class Forum_Crawler:
 
 
 if __name__ == "__main__":
-    fc = Forum_Crawler()
+    fc = ForumCrawler()
     fc.run_crawler()
