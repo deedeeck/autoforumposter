@@ -14,7 +14,7 @@ CONGRAGULATIONS_MSG_TEMPLATE = ["good luck bro!!!!!!!!",
 
 class ForumCrawler:
 
-    def __init__(self):
+    def __init__(self,remote_session_id):
         self.driver_path = os.path.join(os.getcwd(), "chromedriver")
 
         options = webdriver.ChromeOptions()
@@ -24,6 +24,7 @@ class ForumCrawler:
         self.start_time = time.time()
         self.driver = None
         self.messages = []
+        self.remote_session_id = remote_session_id
 
         config_data = configparser.ConfigParser()
         config_data.read('config.txt')
@@ -37,9 +38,16 @@ class ForumCrawler:
         print("Program took " + str(minutes_took) + " minutes")
 
     def start_browser(self):
-        self.driver = webdriver.Chrome(
-            self.driver_path, chrome_options=self.driver_options)
+
+        if self.remote_session_id:
+            url = "http://127.0.0.1:4444/wd/hub"
+            self.driver = webdriver.Remote(command_executor=url, desired_capabilities=self.driver_options.to_capabilities())
+            self.driver.session_id = self.remote_session_id
+        else:
+            self.driver = webdriver.Chrome(
+            self.driver_path, options=self.driver_options)
         self.driver.get(self.homepage)
+        
         agree_button = self.driver.find_element_by_xpath(
             "//input[@name='btnClose']")
         agree_button.click()
@@ -104,44 +112,45 @@ class ForumCrawler:
         self.login()
         individual_post_links = self.get_individual_post_links()
 
-        for count, ipl in enumerate(individual_post_links):
-            # get post id
-            forum_thread_suffix = ipl.split("?")[1]
-            post_reply_url = "https://forums.asianbookie.com/replytotopic.cfm?" + \
-                forum_thread_suffix + "&basic=1"
-            self.driver.get(post_reply_url)
+        # for count, ipl in enumerate(individual_post_links):
+        #     # get post id
+        #     forum_thread_suffix = ipl.split("?")[1]
+        #     post_reply_url = "https://forums.asianbookie.com/replytotopic.cfm?" + \
+        #         forum_thread_suffix + "&basic=1"
+        #     self.driver.get(post_reply_url)
 
-            # find list of users in current page and make sure there is no
-            # repeated posts
-            user_list = [x.text for x in self.driver.find_elements_by_xpath(
-                "//tr[@bgcolor='##F9f9f9']//b")]
-            if(self.username in user_list):
-                continue
+        #     # find list of users in current page and make sure there is no
+        #     # repeated posts
+        #     user_list = [x.text for x in self.driver.find_elements_by_xpath(
+        #         "//tr[@bgcolor='##F9f9f9']//b")]
+        #     if(self.username in user_list):
+        #         continue
 
-            # check if message list is empty
-            if(not self.messages):
-                self.generate_messages()
+        #     # check if message list is empty
+        #     if(not self.messages):
+        #         self.generate_messages()
 
-            text_box = self.driver.find_element_by_xpath(
-                "//textarea[@id='editor2']")
-            text_box.click()
-            text_box.send_keys(self.messages.pop())
+        #     text_box = self.driver.find_element_by_xpath(
+        #         "//textarea[@id='editor2']")
+        #     text_box.click()
+        #     text_box.send_keys(self.messages.pop())
 
-            submit_reply_button = self.driver.find_element_by_xpath(
-                "//input[@name='InsertMessage']")
-            submit_reply_button.click()
-            self.driver.implicitly_wait(100)
+        #     submit_reply_button = self.driver.find_element_by_xpath(
+        #         "//input[@name='InsertMessage']")
+        #     submit_reply_button.click()
+        #     self.driver.implicitly_wait(100)
 
-            if(count % 10 == 0 and count != 0):
-                self.driver.quit()
-                time.sleep(600)
-                self.start_browser()
-                self.login()
+        #     if(count % 10 == 0 and count != 0):
+        #         self.driver.quit()
+        #         time.sleep(600)
+        #         self.start_browser()
+        #         self.login()
 
-        self.calculate_time()
-        self.driver.quit()
+        # self.calculate_time()
+        # self.driver.quit()
 
 
 if __name__ == "__main__":
-    fc = ForumCrawler()
+    remote_session_id = "06e1200c070fca8b4e78946c0990683e"
+    fc = ForumCrawler(remote_session_id=remote_session_id)
     fc.run_crawler()
