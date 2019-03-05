@@ -3,14 +3,16 @@
 * This will help a user to increase his/her post count  
 * Website and credentials are obscured to prevent spamming on the website  
 
-
 ## Setting up
 * Download [chrome driver](https://sites.google.com/a/chromium.org/chromedriver/)   
 * Place driver in repository root folder  
-* Install selenium library  
+* Set up python virtual env
 ```
-pip install -U selenium
-```  
+pip install virtualenv  
+virtualenv -p /usr/bin/python3 env  
+source env/bin/activate  
+pip install -r requirements.txt
+```
 
 ## Running the crawler
 ```
