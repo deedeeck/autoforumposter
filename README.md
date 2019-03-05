@@ -27,10 +27,10 @@ python3 poster.py
 ```
 java -jar selenium-server-standalone-3.141.59.jar
 ```
-* Once server is running, open a new terminal window and run get_remote_session_id.py to get session id of selenium server
+* Once server is running, open a new terminal window and run get_remote_session_id.py to get selenium server session id
 * Assign your new chrome session in your script to use this session id via:
 ```
-driver.session_id = <<selenium server session id
+driver.session_id = <<selenium server session id>>
 ```
 
 ## Current features
