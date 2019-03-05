@@ -21,7 +21,7 @@ python3 poster.py
 
 ## Using selenium standalone server for local testing and debugging
 * To test crawling a website without restarting chrome sessions repeatedly
-* Download selenium standalone server from https://www.seleniumhq.org/download/
+* Download [selenium standalone server](https://www.seleniumhq.org/download/)
 * File will be a jar file (eg java -jar selenium-server-standalone-3.141.59.jar)
 * Run the server using:
 ```
