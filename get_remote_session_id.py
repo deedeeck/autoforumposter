@@ -19,4 +19,4 @@ else :
 	print(driver.session_id)
 	driver.get('https://www.bbc.com/')
 
-driver.get('https://www.yahoo.com.my')
+driver.get('https://www.bbc.com/')
