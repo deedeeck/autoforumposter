@@ -13,6 +13,12 @@ virtualenv -p /usr/bin/python3 env
 source env/bin/activate  
 pip install -r requirements.txt
 ```
+* Install chrome binaries
+```  
+wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - 
+sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+sudo apt-get update 
+sudo a
 
 ## Running the crawler
 ```
@@ -29,6 +35,7 @@ java -jar selenium-server-standalone-3.141.59.jar
 ```
 * Once server is running, open a new terminal window and run get_remote_session_id.py to get selenium server session id
   * Eg of selenium server session id : 600b64f7ab85973f6392df872199f534
+  * Replace remote_session_id in poster.py with your selenium server session id
 * Assign your new chrome session in your script to use this session id via:
 ```
 driver.session_id = <<selenium server session id>>
