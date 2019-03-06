@@ -1,10 +1,12 @@
 import configparser
 import copy
+import logging
 import os
 import random
 import time
 
 from selenium import webdriver
+
 
 CONGRAGULATIONS_MSG_TEMPLATE = ["good luck bro!!!!!!!!",
                                 "all the best!!!!!!!!!!!", "best of luck!!!!!!!!!!!!",
@@ -35,7 +37,7 @@ class ForumCrawler:
     def calculate_time(self):
         seconds_took = time.time() - self.start_time
         minutes_took = seconds_took / 60
-        print("Program took " + str(minutes_took) + " minutes")
+        logging.info("Program took " + str(minutes_took) + " minutes")
 
     def start_browser(self):
 
@@ -47,10 +49,12 @@ class ForumCrawler:
             self.driver = webdriver.Chrome(
                 self.driver_path, options=self.driver_options)
         self.driver.get(self.homepage)
+        logging.info("Crawler going to homepage: ", self.homepage)
 
         agree_button = self.driver.find_element_by_xpath(
             "//input[@name='btnClose']")
         agree_button.click()
+        logging.info("Agree button clicked")
 
     def login(self):
         login_link = self.driver.find_element_by_xpath(
@@ -69,6 +73,7 @@ class ForumCrawler:
             "//input[@name='Login']")
         login_button.click()
         self.driver.implicitly_wait(30)
+        logging.info("Crawler sucessfully logged in")
 
     def get_post_titles(self):
 
@@ -143,6 +148,8 @@ class ForumCrawler:
                 submit_reply_button = self.driver.find_element_by_xpath(
                     "//input[@name='InsertMessage']")
                 submit_reply_button.click()
+                logging.info("One post...posted up!")
+
                 self.driver.implicitly_wait(100)
 
                 if(count % 10 == 0 and count != 0):
