@@ -18,7 +18,7 @@ class ForumCrawler:
         self.driver_path = os.path.join(os.getcwd(), "chromedriver")
 
         options = webdriver.ChromeOptions()
-        # options.add_argument('headless')
+        options.add_argument('headless')
         self.driver_options = options
 
         self.start_time = time.time()
