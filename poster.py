@@ -14,7 +14,7 @@ CONGRAGULATIONS_MSG_TEMPLATE = ["good luck bro!!!!!!!!",
 
 class ForumCrawler:
 
-    def __init__(self,remote_session_id):
+    def __init__(self, remote_session_id=""):
         self.driver_path = os.path.join(os.getcwd(), "chromedriver")
 
         options = webdriver.ChromeOptions()
@@ -45,9 +45,9 @@ class ForumCrawler:
             self.driver.session_id = self.remote_session_id
         else:
             self.driver = webdriver.Chrome(
-            self.driver_path, options=self.driver_options)
+                self.driver_path, options=self.driver_options)
         self.driver.get(self.homepage)
-        
+
         agree_button = self.driver.find_element_by_xpath(
             "//input[@name='btnClose']")
         agree_button.click()
@@ -110,47 +110,52 @@ class ForumCrawler:
     def run_crawler(self):
         self.start_browser()
         self.login()
-        individual_post_links = self.get_individual_post_links()
 
-        # for count, ipl in enumerate(individual_post_links):
-        #     # get post id
-        #     forum_thread_suffix = ipl.split("?")[1]
-        #     post_reply_url = "https://forums.asianbookie.com/replytotopic.cfm?" + \
-        #         forum_thread_suffix + "&basic=1"
-        #     self.driver.get(post_reply_url)
+        channel_links = ['https://forums.asianbookie.com/viewtopics.cfm?Forum=32', 'https://forums.asianbookie.com/viewtopics.cfm?Forum=33', 'https://forums.asianbookie.com/viewtopics.cfm?Forum=33', 'https://forums.asianbookie.com/viewtopics.cfm?Forum=34', 'https://forums.asianbookie.com/viewtopics.cfm?Forum=35', 'https://forums.asianbookie.com/viewtopics.cfm?Forum=36']
 
-        #     # find list of users in current page and make sure there is no
-        #     # repeated posts
-        #     user_list = [x.text for x in self.driver.find_elements_by_xpath(
-        #         "//tr[@bgcolor='##F9f9f9']//b")]
-        #     if(self.username in user_list):
-        #         continue
+        for cl in channel_links:
+            self.driver.get(cl)
+            individual_post_links = self.get_individual_post_links()
 
-        #     # check if message list is empty
-        #     if(not self.messages):
-        #         self.generate_messages()
+            for count, ipl in enumerate(individual_post_links):
+                # get post id
+                forum_thread_suffix = ipl.split("?")[1]
+                post_reply_url = "https://forums.asianbookie.com/replytotopic.cfm?" + \
+                    forum_thread_suffix + "&basic=1"
+                self.driver.get(post_reply_url)
 
-        #     text_box = self.driver.find_element_by_xpath(
-        #         "//textarea[@id='editor2']")
-        #     text_box.click()
-        #     text_box.send_keys(self.messages.pop())
+                # find list of users in current page and make sure there is no
+                # repeated posts
+                user_list = [x.text for x in self.driver.find_elements_by_xpath(
+                    "//tr[@bgcolor='##F9f9f9']//b")]
+                if(self.username in user_list):
+                    continue
 
-        #     submit_reply_button = self.driver.find_element_by_xpath(
-        #         "//input[@name='InsertMessage']")
-        #     submit_reply_button.click()
-        #     self.driver.implicitly_wait(100)
+                # check if message list is empty
+                if(not self.messages):
+                    self.generate_messages()
 
-        #     if(count % 10 == 0 and count != 0):
-        #         self.driver.quit()
-        #         time.sleep(600)
-        #         self.start_browser()
-        #         self.login()
+                text_box = self.driver.find_element_by_xpath(
+                    "//textarea[@id='editor2']")
+                text_box.click()
+                text_box.send_keys(self.messages.pop())
 
-        # self.calculate_time()
-        # self.driver.quit()
+                submit_reply_button = self.driver.find_element_by_xpath(
+                    "//input[@name='InsertMessage']")
+                submit_reply_button.click()
+                self.driver.implicitly_wait(100)
+
+                if(count % 10 == 0 and count != 0):
+                    self.driver.quit()
+                    time.sleep(600)
+                    self.start_browser()
+                    self.login()
+
+        self.calculate_time()
+        self.driver.quit()
 
 
 if __name__ == "__main__":
-    remote_session_id = "06e1200c070fca8b4e78946c0990683e"
+    remote_session_id = ""
     fc = ForumCrawler(remote_session_id=remote_session_id)
     fc.run_crawler()
